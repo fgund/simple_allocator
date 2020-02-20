@@ -89,7 +89,7 @@ struct logging_allocator {
 #endif
         new(p) U(std::forward<Args>(args)...);
 
-    };
+    }
 
     void destroy(T *p) {
 #ifndef USE_PRETTY
