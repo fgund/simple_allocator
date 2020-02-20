@@ -4,6 +4,7 @@
 #include <cstddef>
 #include <cstdlib>
 #include <utility>
+#include <new>
 
 template<typename T, size_t n_elem>
 struct simple_allocator {

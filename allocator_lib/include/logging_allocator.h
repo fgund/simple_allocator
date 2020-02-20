@@ -8,6 +8,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <utility>
+#include <new>
 
 //#define USE_PRETTY
 
