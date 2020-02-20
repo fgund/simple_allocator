@@ -1,0 +1,26 @@
+os: linux
+language: python
+python: "3.7"
+dist: bionic
+install:
+# Install conan
+  - pip install conan
+# Automatic detection of your arch, compiler, etc.
+  - conan user
+before_script:
+- echo "deb http://archive.ubuntu.com/ubuntu xenial main universe" | sudo tee -a /etc/apt/sources.list
+- sudo apt-get update -qq
+script:
+- conan remote add bincrafters https://api.bintray.com/conan/bincrafters/public-conan
+- conan install -s compiler.libcxx=libstdc++11 .
+- conan profile update settings.compiler.libcxx=libstdc++11 default
+- conan profile update settings.compiler.version=7 default
+- cmake .
+- cmake --build . --config Release
+- cmake --build . --target test
+- cmake --build . --target package
+deploy:
+  provider: script
+  skip_cleanup: true
+  script:
+  - curl -T allocator-0.0.$TRAVIS_BUILD_NUMBER-Linux.deb -ufgund:$BINTRAY_API_KEY "https://api.bintray.com/content/fgund/OTUS_CPP/allocator/$TRAVIS_BUILD_NUMBER/allocator-0.0.$TRAVIS_BUILD_NUMBER-Linux.deb;deb_distribution=bionic;deb_component=main;deb_architecture=amd64;publish=1"
