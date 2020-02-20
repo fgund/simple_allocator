@@ -2,6 +2,8 @@
 #define ALLOCATOR_SIMPLE_ALLOCATOR_H
 
 #include <cstddef>
+#include <cstdlib>
+#include <utility>
 
 template<typename T, size_t n_elem>
 struct simple_allocator {
@@ -33,7 +35,7 @@ struct simple_allocator {
         }
         if (!memory_pool) {
             auto allocation_size = multiplier * n_elem * sizeof(T);
-            memory_pool = reinterpret_cast<pointer>(malloc(allocation_size));
+            memory_pool = reinterpret_cast<pointer>(std::malloc(allocation_size));
             size = allocation_size/sizeof(T);
         }
         if (!memory_pool) {
@@ -52,7 +54,7 @@ struct simple_allocator {
         if (offset != 0) {
             return;
         }
-        free(memory_pool);
+        std::free(memory_pool);
         memory_pool = nullptr;
         size = 0;
     }

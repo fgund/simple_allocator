@@ -6,6 +6,8 @@
 #endif
 
 #include <iostream>
+#include <cstdlib>
+#include <utility>
 
 //#define USE_PRETTY
 
@@ -48,7 +50,7 @@ struct logging_allocator {
         }
         if (!memory_pool) {
             auto allocation_size = multiplier * n_elem * sizeof(T);
-            memory_pool = reinterpret_cast<pointer>(malloc(allocation_size));
+            memory_pool = reinterpret_cast<pointer>(std::malloc(allocation_size));
             size = allocation_size/sizeof(T);
             std::cout << "Memory allocated for " << size <<" elements" << std::endl;
             std::cout << "memory_pool_ptr " << memory_pool << std::endl;
@@ -75,7 +77,7 @@ struct logging_allocator {
         if (offset != 0) {
             return;
         }
-        free(memory_pool);
+        std::free(memory_pool);
         memory_pool = nullptr;
         size = 0;
     }
