@@ -6,7 +6,7 @@
 #include <utility>
 #include <new>
 
-template<typename T, size_t n_elem>
+template<typename T, size_t n_elem = 1>
 struct simple_allocator {
     using value_type = T;
     using pointer = T*;
@@ -55,15 +55,16 @@ struct simple_allocator {
         if (offset != 0) {
             return;
         }
-        std::free(memory_pool);
-        memory_pool = nullptr;
-        size = 0;
+        if(memory_pool) {
+            std::free(memory_pool);
+            memory_pool = nullptr;
+            size = 0;
+        }
     }
 
     template<typename U, typename ...Args>
     void construct(U *p, Args &&...args) {
         new(p) U(std::forward<Args>(args)...);
-
     }
 
     void destroy(T *p) {

@@ -12,7 +12,7 @@
 
 //#define USE_PRETTY
 
-template<typename T, size_t n_elem>
+template<typename T, size_t n_elem = 1>
 struct logging_allocator {
     using value_type = T;
     using pointer = T*;
@@ -74,13 +74,19 @@ struct logging_allocator {
         if (!p) {
             return;
         }
+        std::cout << "ptr " << p << std::endl;
         offset -= n;
+        std::cout << "offset: " << offset << std::endl;
         if (offset != 0) {
             return;
         }
-        std::free(memory_pool);
-        memory_pool = nullptr;
-        size = 0;
+        std::cout << "free: " << memory_pool << std::endl;
+        if(memory_pool) {
+            std::cout << "memory_pool_ptr " << memory_pool << std::endl;
+            std::free(memory_pool);
+            memory_pool = nullptr;
+            size = 0;
+        }
     }
 
     template<typename U, typename ...Args>

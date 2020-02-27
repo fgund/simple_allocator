@@ -20,9 +20,11 @@ PROPERTIES
 )
 
 add_subdirectory(allocator_lib)
+add_subdirectory(container_lib)
 
 target_link_libraries(allocator PRIVATE
         allocator_lib
+        container_lib
 )
 
 
